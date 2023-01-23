@@ -1,0 +1,25 @@
+version: '1'
+services:
+  service-postgres:
+    container_name: container-service-postgres
+    image: postgres:15.1
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+       - service-postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - service-postgres
+    restart: unless-stopped
+
+networks:
+  service-postgres:
+    driver: bridge
+
+volumes:
+    service-postgres:
