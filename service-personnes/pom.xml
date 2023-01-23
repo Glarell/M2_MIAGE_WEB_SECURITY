@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.m2</groupId>
-	<artifactId>service_offres</artifactId>
+	<artifactId>services-personnes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>service_offres</name>
+	<name>services-personnes</name>
 	<description>API pour la gestion d&apos;offres de stages</description>
 	<properties>
 		<java.version>17</java.version>
