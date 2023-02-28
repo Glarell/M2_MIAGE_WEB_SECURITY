@@ -14,12 +14,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class OffreAssembler implements RepresentationModelAssembler<Offre, EntityModel<Offre>> {
     @Override
     public EntityModel<Offre> toModel(Offre offre) {
-        return null;
-        /**
         return EntityModel.of(offre,
-                linkTo(methodOn(OffreRepresentation.class).getOffre(offre.getId())).withSelfRel(),
+               linkTo(methodOn(OffreRepresentation.class).getOffre(offre.getIdOffre())).withSelfRel(),
                 linkTo(methodOn(OffreRepresentation.class).getAllOffres()).withRel("collections"));
-         */
     }
 
     @Override

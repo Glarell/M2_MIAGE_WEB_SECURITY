@@ -1,8 +1,7 @@
 CREATE TABLE Offre (
-    id INTEGER PRIMARY KEY NOT NULL,
+    idOffre INTEGER PRIMARY KEY NOT NULL,
     nomStage VARCHAR NOT NULL,
     domaine VARCHAR NOT NULL,
-    nomOrganisation VARCHAR NOT NULL,
     descriptionStage VARCHAR NOT NULL,
     datePublicationOffre VARCHAR NOT NULL,
     niveauEtudesStage INTEGER NOT NULL,
@@ -13,17 +12,28 @@ CREATE TABLE Offre (
     indemnisation FLOAT NOT NULL,
     idOrganisation INTEGER NOT NULL,
     idLieuStage INTEGER NOT NULL,
-    FOREIGN KEY (idOrganisation) REFERENCES Organisation (idOrganisation),
-    FOREIGN KEY (idLieuStage) REFERENCES LieuStage (idLieuStage)
+    FOREIGN KEY (idOrganisation) REFERENCES Organisation (idOrganisation) ON DELETE CASCADE,
+    FOREIGN KEY (idLieuStage) REFERENCES LieuStage (idLieuStage) ON DELETE CASCADE
 );
 
 CREATE TABLE Organisation(
     idOrganisation INTEGER PRIMARY KEY NOT NULL,
+    nomOrganisation VARCHAR NOT NULL,
     idAdresse INTEGER NOT NULL,
     email VARCHAR NOT NULL,
     telephone VARCHAR NOT NULL,
     url VARCHAR NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse)
+    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse) ON DELETE CASCADE
+);
+
+CREATE TABLE LieuStage(
+    idLieuStage INTEGER PRIMARY KEY NOT NULL,
+    idAdresse INTEGER NOT NULL,
+    telephone INTEGER NOT NULL,
+    url VARCHAR NOT NULL,
+    idGeo INTEGER NOT NULL,
+    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse) ON DELETE CASCADE,
+    FOREIGN KEY (idGeo) REFERENCES Geo (idGeo) ON DELETE CASCADE
 );
 
 CREATE TABLE Adresse(
@@ -32,15 +42,6 @@ CREATE TABLE Adresse(
     adresseVille VARCHAR NOT NULL,
     codePostal INTEGER NOT NULL,
     adresseRue VARCHAR NOT NULL
-);
-CREATE TABLE LieuStage(
-    idLieuStage INTEGER PRIMARY KEY NOT NULL,
-    idAdresse INTEGER NOT NULL,
-    telephone INTEGER NOT NULL,
-    url VARCHAR NOT NULL,
-    idGeo INTEGER NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse),
-    FOREIGN KEY (idGeo) REFERENCES Geo (idGeo)
 );
 
 CREATE TABLE Geo(
@@ -52,6 +53,14 @@ CREATE TABLE Personne(
     idPersonne INTEGER PRIMARY KEY NOT NULL,
     nom VARCHAR NOT NULL,
     prenom VARCHAR NOT NULL
+);
+CREATE TABLE Candidature(
+    idCandidature INTEGER PRIMARY KEY NOT NULL,
+    idPersonne INTEGER NOT NULL,
+    idOffre INTEGER NOT NULL,
+    dateCandidature VARCHAR NOT NULL,
+    FOREIGN KEY (idPersonne) REFERENCES Personne(idPersonne) ON DELETE CASCADE,
+    FOREIGN KEY (idOffre) REFERENCES Offre(idOffre) ON DELETE CASCADE
 );
 
 INSERT INTO geo(idGeo, latitude, longitude) VALUES (1,50.23,79.23);
@@ -67,11 +76,15 @@ INSERT INTO Adresse(idAdresse, adressePays, adresseVille, codePostal, adresseRue
 INSERT INTO LieuStage(idLieuStage, idAdresse, telephone, url, idGeo) VALUES (1,1,0630771158,'https://fake-recrute.com',1);
 INSERT INTO LieuStage(idLieuStage, idAdresse, telephone, url, idGeo) VALUES (2,2,0720721440,'https://fake-recrute-jamais.com',2);
 
-INSERT INTO Organisation(idOrganisation, idAdresse, email, telephone, url) VALUES (1,1,'sample@entreprise.com',0387998898,'https://sample-entreprise.com');
-INSERT INTO Organisation(idOrganisation, idAdresse, email, telephone, url) VALUES (2,2,'contact@amazon.com',03275968898,'https://amazon.com');
+INSERT INTO Organisation(idOrganisation,nomOrganisation, idAdresse, email, telephone, url) VALUES (1,'Sample Entreprise',1,'sample@entreprise.com',0387998898,'https://sample-entreprise.com');
+INSERT INTO Organisation(idOrganisation,nomOrganisation, idAdresse, email, telephone, url) VALUES (2,'Amazon Entreprise',2,'contact@amazon.com',03275968898,'https://amazon.com');
 
-INSERT INTO Offre (id, nomStage, domaine, nomOrganisation, descriptionStage, datePublicationOffre, niveauEtudesStage, experienceRequiseStage, dateDebutStage, dureeStage, salaireStage, indemnisation, idOrganisation, idLieuStage)
-VALUES (1,'Développeur Python','Développement Informatique','Sample Entreprise','Automatisation de processus','2023-01-23',5,2,'2023-04-01',6,1263.56,125.98,1,1);
+INSERT INTO Offre (idOffre, nomStage, domaine, descriptionStage, datePublicationOffre, niveauEtudesStage, experienceRequiseStage, dateDebutStage, dureeStage, salaireStage, indemnisation, idOrganisation, idLieuStage)
+VALUES (1,'Développeur Python','Développement Informatique','Automatisation de processus','2023-01-23',5,2,'2023-04-01',6,1263.56,125.98,1,1);
 
-INSERT INTO Offre (id, nomStage, domaine, nomOrganisation, descriptionStage, datePublicationOffre, niveauEtudesStage, experienceRequiseStage, dateDebutStage, dureeStage, salaireStage, indemnisation, idOrganisation, idLieuStage)
-VALUES (2,'Architecte SI','Conception SI informatique','Amazon Entreprise','Refonte du SI','2023-01-10',5,10,'2023-09-01',12,2263.56,525.98,2,2);
+INSERT INTO Offre (idOffre, nomStage, domaine, descriptionStage, datePublicationOffre, niveauEtudesStage, experienceRequiseStage, dateDebutStage, dureeStage, salaireStage, indemnisation, idOrganisation, idLieuStage)
+VALUES (2,'Architecte SI','Conception SI informatique','Refonte du SI','2023-01-10',5,10,'2023-09-01',12,2263.56,525.98,2,2);
+
+INSERT INTO Candidature(idCandidature,idPersonne,idOffre,dateCandidature) VALUES (1,1,1,'2023-02-28');
+INSERT INTO Candidature(idCandidature,idPersonne,idOffre,dateCandidature) VALUES (2,2,2,'2023-03-01');
+INSERT INTO Candidature(idCandidature,idPersonne,idOffre,dateCandidature) VALUES (3,1,2,'2023-03-02');

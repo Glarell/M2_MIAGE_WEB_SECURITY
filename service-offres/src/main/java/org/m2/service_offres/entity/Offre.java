@@ -4,21 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "offre")
 public class Offre implements Serializable {
 
     @Id
-    private int id;
+    private int idOffre;
     private String nomStage;
     private String domaine;
-    private String nomOrganisation;
     private String descriptionStage;
     private String datePublicationOffre;
     private int niveauEtudesStage;
@@ -27,33 +28,13 @@ public class Offre implements Serializable {
     private int dureeStage;
     private long salaireStage;
     private long indemnisation;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name="idOrganisation", referencedColumnName = "idOrganisation")
     private Organisation organisation;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name="idLieuStage", referencedColumnName = "idlieustage")
     private LieuStage lieuStage;
 
-    private class Organisation implements Serializable{
-        Adresse adresse;
-        private String email;
-        private int telephone;
-        private String url;
-    }
-
-
-    private class Adresse implements Serializable {
-        private String adressePays;
-        private String adresseVille;
-        private int codePostal;
-        private String adresseRue;
-    }
-
-    private class LieuStage implements Serializable {
-        private Adresse adresse;
-        private Geo geo;
-        private int telephone;
-        private String url;
-
-        private class Geo implements Serializable {
-            private long latitude;
-            private long longitude;
-        }
-    }
+    @OneToMany(targetEntity = Candidature.class, mappedBy = "idOffre", cascade = CascadeType.REMOVE)
+    private List<Candidature> candidatures = new ArrayList<>();
 }

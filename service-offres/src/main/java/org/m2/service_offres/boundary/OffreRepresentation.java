@@ -1,12 +1,17 @@
 package org.m2.service_offres.boundary;
 
 import org.m2.service_offres.control.OffreAssembler;
+import org.m2.service_offres.entity.Candidature;
+import org.m2.service_offres.entity.Offre;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @ResponseBody
@@ -22,9 +27,12 @@ public class OffreRepresentation {
         this.oa=oa;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAllOffres() {
-        return ResponseEntity.ok(oa.toCollectionModel(or.findAll()));
+    @GetMapping(value="/{offreId}")
+    public ResponseEntity<?> getOffre(@PathVariable("offreId") Integer id) {
+        return Optional.of(or.findById(id))
+                .filter(Optional::isPresent)
+                .map(i -> ResponseEntity.ok(oa.toModel(i.get())))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     /**
@@ -41,7 +49,10 @@ public class OffreRepresentation {
      * GET
      * offres/
      */
-
+    @GetMapping
+    public ResponseEntity<?> getAllOffres() {
+        return ResponseEntity.ok(oa.toCollectionModel(or.findAll()));
+    }
     /**
      * GET
      * offres/id_offre/users
@@ -55,6 +66,16 @@ public class OffreRepresentation {
      * PUT
      * offres/id_offre/id_candidature
      */
+    @PutMapping(value="{idOffre}")
+    @Transactional
+    public ResponseEntity<?> update(@PathVariable("idOffre") Integer id, @RequestBody Offre new_offre) {
+        if (!or.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        new_offre.setIdOffre(id);
+        or.save(new_offre);
+        return ResponseEntity.ok().build();
+    }
 
     /**
      * PUT offres/id_offre
@@ -64,4 +85,15 @@ public class OffreRepresentation {
      * DELETE
      * offres/id_offre
      */
+    @DeleteMapping(value = "/{idOffre}")
+    @Transactional
+    public ResponseEntity<?> deleteOffre(@PathVariable("idOffre") Integer id) {
+        Optional<Offre> offre = or.findById(id);
+        /*if (offre.isPresent()) {
+            ArrayList<Candidature> candidatureList = cr.findAllByidOffre(id);
+            candidatureList.forEach(el -> (cr.findById(el.getIdOffre())).ifPresent(cr::delete));
+        }*/
+        offre.ifPresent(or::delete);
+        return ResponseEntity.noContent().build();
+    }
 }
