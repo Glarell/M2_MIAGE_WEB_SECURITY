@@ -22,4 +22,6 @@ public class Candidature implements Serializable {
     //@JoinColumn(name="idOffre", referencedColumnName = "idOffre")
     private int idOffre;
     private String dateCandidature;
+
+    private boolean isActive;
 }

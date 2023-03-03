@@ -1,40 +1,10 @@
-CREATE TABLE Offre (
-    idOffre INTEGER PRIMARY KEY NOT NULL,
-    nomStage VARCHAR NOT NULL,
-    domaine VARCHAR NOT NULL,
-    descriptionStage VARCHAR NOT NULL,
-    datePublicationOffre VARCHAR NOT NULL,
-    niveauEtudesStage INTEGER NOT NULL,
-    experienceRequiseStage INTEGER NOT NULL,
-    dateDebutStage VARCHAR NOT NULL,
-    dureeStage INTEGER NOT NULL,
-    salaireStage FLOAT NOT NULL,
-    indemnisation FLOAT NOT NULL,
-    idOrganisation INTEGER NOT NULL,
-    idLieuStage INTEGER NOT NULL,
-    FOREIGN KEY (idOrganisation) REFERENCES Organisation (idOrganisation) ON DELETE CASCADE,
-    FOREIGN KEY (idLieuStage) REFERENCES LieuStage (idLieuStage) ON DELETE CASCADE
-);
-
-CREATE TABLE Organisation(
-    idOrganisation INTEGER PRIMARY KEY NOT NULL,
-    nomOrganisation VARCHAR NOT NULL,
-    idAdresse INTEGER NOT NULL,
-    email VARCHAR NOT NULL,
-    telephone VARCHAR NOT NULL,
-    url VARCHAR NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse) ON DELETE CASCADE
-);
-
-CREATE TABLE LieuStage(
-    idLieuStage INTEGER PRIMARY KEY NOT NULL,
-    idAdresse INTEGER NOT NULL,
-    telephone INTEGER NOT NULL,
-    url VARCHAR NOT NULL,
-    idGeo INTEGER NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse) ON DELETE CASCADE,
-    FOREIGN KEY (idGeo) REFERENCES Geo (idGeo) ON DELETE CASCADE
-);
+drop table adresse cascade;
+drop table candidature cascade;
+drop table geo cascade;
+drop table lieustage cascade;
+drop table offre cascade;
+drop table organisation cascade;
+drop table personne cascade;
 
 CREATE TABLE Adresse(
     idAdresse INTEGER PRIMARY KEY NOT NULL,
@@ -54,13 +24,54 @@ CREATE TABLE Personne(
     nom VARCHAR NOT NULL,
     prenom VARCHAR NOT NULL
 );
+
+CREATE TABLE Organisation(
+    idOrganisation INTEGER PRIMARY KEY NOT NULL,
+    nomOrganisation VARCHAR NOT NULL,
+    idAdresse INTEGER,
+    email VARCHAR NOT NULL,
+    telephone VARCHAR NOT NULL,
+    url VARCHAR NOT NULL,
+    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse)
+);
+
+CREATE TABLE LieuStage(
+    idLieuStage INTEGER PRIMARY KEY NOT NULL,
+    idAdresse INTEGER,
+    telephone INTEGER NOT NULL,
+    url VARCHAR NOT NULL,
+    idGeo INTEGER NOT NULL,
+    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse),
+    FOREIGN KEY (idGeo) REFERENCES Geo (idGeo)
+);
+
+CREATE TABLE Offre (
+                       idOffre INTEGER PRIMARY KEY NOT NULL,
+                       nomStage VARCHAR NOT NULL,
+                       domaine VARCHAR NOT NULL,
+                       descriptionStage VARCHAR NOT NULL,
+                       datePublicationOffre VARCHAR NOT NULL,
+                       niveauEtudesStage INTEGER NOT NULL,
+                       experienceRequiseStage INTEGER NOT NULL,
+                       dateDebutStage VARCHAR NOT NULL,
+                       dureeStage INTEGER NOT NULL,
+                       salaireStage FLOAT NOT NULL,
+                       indemnisation FLOAT NOT NULL,
+                       idOrganisation INTEGER NOT NULL,
+                       idLieuStage INTEGER NOT NULL,
+                       isActive BOOLEAN DEFAULT TRUE,
+                       FOREIGN KEY (idOrganisation) REFERENCES Organisation (idOrganisation),
+                       FOREIGN KEY (idLieuStage) REFERENCES LieuStage (idLieuStage)
+);
+
 CREATE TABLE Candidature(
     idCandidature INTEGER PRIMARY KEY NOT NULL,
+    isActive BOOLEAN DEFAULT TRUE,
     idPersonne INTEGER NOT NULL,
     idOffre INTEGER NOT NULL,
     dateCandidature VARCHAR NOT NULL,
-    FOREIGN KEY (idPersonne) REFERENCES Personne(idPersonne) ON DELETE CASCADE,
-    FOREIGN KEY (idOffre) REFERENCES Offre(idOffre) ON DELETE CASCADE
+    FOREIGN KEY (idPersonne) REFERENCES Personne(idPersonne),
+    FOREIGN KEY (idOffre) REFERENCES Offre(idOffre)
 );
 
 INSERT INTO geo(idGeo, latitude, longitude) VALUES (1,50.23,79.23);

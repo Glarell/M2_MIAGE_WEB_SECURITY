@@ -29,11 +29,13 @@ public class Offre implements Serializable {
     private long salaireStage;
     private long indemnisation;
     @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="idOrganisation", referencedColumnName = "idOrganisation")
+    @JoinColumn(name="idOrganisation", referencedColumnName = "idorganisation")
     private Organisation organisation;
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="idLieuStage", referencedColumnName = "idlieustage")
     private LieuStage lieuStage;
+
+    private boolean isActive;
 
     @OneToMany(targetEntity = Candidature.class, mappedBy = "idOffre", cascade = CascadeType.REMOVE)
     private List<Candidature> candidatures = new ArrayList<>();

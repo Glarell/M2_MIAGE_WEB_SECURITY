@@ -15,10 +15,10 @@ public class Organisation implements Serializable {
     @Id
     private int idOrganisation;
     private String nomOrganisation;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="idAdresse",referencedColumnName = "idAdresse")
     Adresse adresse;
     private String email;
-    private int telephone;
+    private String telephone;
     private String url;
 }

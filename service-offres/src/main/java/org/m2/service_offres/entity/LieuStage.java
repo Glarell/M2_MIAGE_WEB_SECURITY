@@ -16,10 +16,10 @@ import java.io.Serializable;
 public class LieuStage implements Serializable {
     @Id
     private int idLieuStage;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="idAdresse", referencedColumnName = "idAdresse")
     private Adresse adresse;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="idGeo", referencedColumnName = "idGeo")
     private Geo geo;
     private int telephone;
