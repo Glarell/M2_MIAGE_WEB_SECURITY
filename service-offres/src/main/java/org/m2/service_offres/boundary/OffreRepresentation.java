@@ -3,10 +3,12 @@ package org.m2.service_offres.boundary;
 import org.m2.service_offres.control.OffreAssembler;
 import org.m2.service_offres.entity.Candidature;
 import org.m2.service_offres.entity.Offre;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.NestedServletException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -73,11 +75,14 @@ public class OffreRepresentation {
         offre.setIdOffre(UUID.randomUUID().version());
         offre.setActive(true);
         try {
+            if (offre.getNomStage()==null) { throw new DataIntegrityViolationException("Nom stage incorrect !");}
             Offre saved = or.save(offre);
             URI location = org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo(OffreRepresentation.class).slash(saved.getIdOffre()).toUri();
             return ResponseEntity.created(location).build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().build();
         }
 
     }

@@ -1,10 +1,10 @@
-drop table adresse cascade;
-drop table candidature cascade;
-drop table geo cascade;
-drop table lieustage cascade;
-drop table offre cascade;
-drop table organisation cascade;
-drop table personne cascade;
+drop table if exists adresse cascade;
+drop table if exists candidature cascade;
+drop table if exists geo cascade;
+drop table if exists lieustage cascade;
+drop table if exists offre cascade;
+drop table if exists organisation cascade;
+drop table if exists personne cascade;
 
 CREATE TABLE Adresse(
     idAdresse INTEGER PRIMARY KEY NOT NULL,
