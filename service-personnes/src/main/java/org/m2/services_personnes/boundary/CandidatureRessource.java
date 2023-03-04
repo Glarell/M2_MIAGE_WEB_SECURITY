@@ -14,4 +14,7 @@ public interface CandidatureRessource extends JpaRepository<Candidature,Integer>
 
     @Query(value = "SELECT * FROM candidature WHERE idPersonne=?1", nativeQuery = true)
     ArrayList<Candidature> getCandidaturesByUser(Integer user_id);
+
+    @Query(value = "SELECT * FROM candidature WHERE idOffre=?1 AND isActive=TRUE", nativeQuery = true)
+    ArrayList<Candidature> getCandidaturesByIdOffre(Integer offre_id);
 }

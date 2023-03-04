@@ -1,27 +1,31 @@
 services:
   #Service Offre
   service-offres:
-    image: service-offres:0.0.1-SNAPSHOT
+    image: service-offres:1.0.0
     container_name: service-offres
     depends_on:
       - service-postgres
-    ports:
-        - 8082:8082
+#    ports:
+#        - 8082:8082
     environment:
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
-      - OTEL_SERVICE_NAME=service-offres
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    network_mode: "host"
 
   #Service Personne
   service-personnes:
-    image: service-personnes:0.0.1-SNAPSHOT
+    image: service-personnes:1.0.0
     container_name: service-personnes
     depends_on:
       - service-postgres
-    ports:
-      - 8083:8083
+#    ports:
+#      - 8083:8083
     environment:
-      - JAVA_TOOL_OPTIONS=-javaagent:/workspace/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
-      - OTEL_SERVICE_NAME=service-personnes
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    network_mode: "host"
 
   #Service Postgresql
   service-postgres:
@@ -33,15 +37,10 @@ services:
       PGDATA: /data/postgres
     volumes:
       - service-postgres:/data/postgres
-    ports:
-      - "5432:5432"
-    networks:
-      - service-postgres
+    network_mode: "host"
+#    ports:
+#      - "5432:5432"
     restart: unless-stopped
-
-networks:
-  service-postgres:
-    driver: bridge
 
 volumes:
   service-postgres:

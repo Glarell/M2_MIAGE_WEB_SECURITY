@@ -12,5 +12,4 @@ public interface OffreRessource extends JpaRepository<Offre,Integer> {
 
     @Query(value = "SELECT * from Offre WHERE isActive=TRUE",nativeQuery = true)
     ArrayList<Offre> findAllActive();
-
 }

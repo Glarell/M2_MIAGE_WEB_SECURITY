@@ -37,28 +37,13 @@ public class OffreRepresentation {
     }
 
     /**
-     * POST
-     * offres/id_offre
-     */
-
-    /**
-     * POST
-     * offres/
-     */
-
-    /**
      * GET
      * offres/
      */
     @GetMapping
     public ResponseEntity<?> getAllOffres() {
-//        return ResponseEntity.ok(oa.toCollectionModel(or.findAll()));
         return ResponseEntity.ok(oa.toCollectionModel(or.findAllActive()));
     }
-    /**
-     * GET
-     * offres/id_offre/users
-     */
 
     /**
      * POST offres/id_offre
@@ -84,10 +69,6 @@ public class OffreRepresentation {
         }
 
     }
-    /**
-     * PUT
-     * offres/id_offre/id_candidature
-     */
 
 
     /**

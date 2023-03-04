@@ -35,7 +35,11 @@ public class PersonneRepresentation {
         this.ca=ca;
     }
 
-    @GetMapping(value="/{user_id}")
+    /**
+     * DELETE
+     * users/user_id/
+     */
+    @GetMapping(value="/{user_id}/")
     public ResponseEntity<?> getPersonne(@PathVariable("user_id") Integer id) {
         return Optional.of(pr.findById(id))
                 .filter(Optional::isPresent)
@@ -43,6 +47,10 @@ public class PersonneRepresentation {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * POST
+     * users/candidatures/create/
+     */
     @PostMapping(value="/candidatures/create/",
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,7 +72,11 @@ public class PersonneRepresentation {
         }
     }
 
-    @DeleteMapping(value="{user_id}/candidatures/{offre_id}")
+    /**
+     * DELETE
+     * users/user_id/candidatures/offre_id/
+     */
+    @DeleteMapping(value="{user_id}/candidatures/{offre_id}/")
     public ResponseEntity<?> deleteCandidature(@PathVariable("user_id") Integer user_id, @PathVariable("offre_id") Integer offre_id) {
         ArrayList<Candidature> candidatures = cr.getCandidatureByIdAndUser(user_id,offre_id);
         if (candidatures.isEmpty()) throw new EntityExistsException("Aucune candidature active pour cette offre existe !");
@@ -78,19 +90,53 @@ public class PersonneRepresentation {
         }
     }
 
-
+    /**
+     * GET
+     * users/
+     */
     @GetMapping
     public ResponseEntity<?> getAllPersonnes() {
         return ResponseEntity.ok(pa.toCollectionModel(pr.findAll()));
     }
 
-    @GetMapping(value="/{user_id}/{offre_id}")
+    /**
+     * GET
+     * users/user_id/offre_id/
+     */
+    @GetMapping(value="/{user_id}/{offre_id}/")
     public ResponseEntity<?> getCandidature(@PathVariable("user_id") Integer user_id, @PathVariable("offre_id") Integer offre_id) {
         return ResponseEntity.ok(ca.toCollectionModel(cr.getCandidatureByIdAndUser(user_id,offre_id)));
     }
 
+    /**
+     * GET
+     * users/user_id/candidatures/
+     */
     @GetMapping(value="/{user_id}/candidatures/")
     public ResponseEntity<?> getCandidaturesById(@PathVariable("user_id") Integer user_id) {
         return ResponseEntity.ok(ca.toCollectionModel(cr.getCandidaturesByUser(user_id)));
+    }
+
+    /**
+     * GET
+     * users/candidatures/id_offre/
+     */
+    @GetMapping(value="/candidatures/{offre_id}/")
+    public ResponseEntity<?> getCandidaturesByIdOffre(@PathVariable("offre_id") Integer offre_id) {
+        return ResponseEntity.ok(ca.toCollectionModel(cr.getCandidaturesByIdOffre(offre_id)));
+    }
+
+    /**
+     * PUT
+     * users/candidatures/id_candidature/
+     */
+    @PutMapping(value = "/candidatures/{candidature_id}/")
+    public ResponseEntity<?> putCandidature(@PathVariable("candidature_id") Integer candidature_id, @RequestBody Candidature candidature) {
+        if (!cr.existsById(candidature_id)) {
+            return ResponseEntity.notFound().build();
+        }
+        candidature.setIdCandidature(candidature_id);
+        cr.save(candidature);
+        return ResponseEntity.ok().build();
     }
 }
