@@ -1,10 +1,16 @@
+FROM eclipse-temurin:17.0.5_8-jre AS builder
+WORKDIR workspace
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} intervenant-offres.jar
+RUN java -Djarmode=layertools -jar intervenant-personnes.jar extract
+COPY agent/opentelemetry-javaagent-1.19.2.jar dependencies/BOOT-INF/lib/opentelemetry-javaagent-1.19.2.jar
+
 FROM gcr.io/distroless/java17-debian11
-VOLUME /tmp
 USER nonroot
+WORKDIR workspace
+COPY --from=builder workspace/dependencies/ ./
+COPY --from=builder workspace/spring-boot-loader/ ./
+COPY --from=builder workspace/snapshot-dependencies/ ./
+COPY --from=builder workspace/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
-ARG DEPENDENCY=target/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-
-ENTRYPOINT ["java","-cp","app:app/lib/*","org.miage.service_offres.ServiceOffresApplication"]

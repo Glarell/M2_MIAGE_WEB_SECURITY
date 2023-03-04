@@ -1,19 +1,16 @@
 package org.m2.service_offres.boundary;
 
 import org.m2.service_offres.control.OffreAssembler;
-import org.m2.service_offres.entity.Candidature;
 import org.m2.service_offres.entity.Offre;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.NestedServletException;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,7 +52,8 @@ public class OffreRepresentation {
      */
     @GetMapping
     public ResponseEntity<?> getAllOffres() {
-        return ResponseEntity.ok(oa.toCollectionModel(or.findAll()));
+//        return ResponseEntity.ok(oa.toCollectionModel(or.findAll()));
+        return ResponseEntity.ok(oa.toCollectionModel(or.findAllActive()));
     }
     /**
      * GET
@@ -119,6 +117,6 @@ public class OffreRepresentation {
             to_save.setActive(false);
             or.save(to_save);
         }
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

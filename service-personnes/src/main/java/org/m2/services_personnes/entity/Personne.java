@@ -1,4 +1,4 @@
-package org.m2.service_offres.entity;
+package org.m2.services_personnes.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

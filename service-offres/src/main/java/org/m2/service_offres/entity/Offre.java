@@ -37,6 +37,6 @@ public class Offre implements Serializable {
 
     private boolean isActive;
 
-    @OneToMany(targetEntity = Candidature.class, mappedBy = "idOffre", cascade = CascadeType.REMOVE)
-    private List<Candidature> candidatures = new ArrayList<>();
+    /*@OneToMany(targetEntity = Candidature.class, mappedBy = "idOffre", cascade = CascadeType.REMOVE)
+    private List<Candidature> candidatures = new ArrayList<>();*/
 }
