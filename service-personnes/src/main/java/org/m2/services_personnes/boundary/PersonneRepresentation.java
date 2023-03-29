@@ -13,6 +13,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class PersonneRepresentation {
     }
 
     /**
-     * DELETE
+     * GET
      * users/user_id/
      */
     @GetMapping(value="/{user_id}/")
@@ -55,7 +56,7 @@ public class PersonneRepresentation {
     consumes = MediaType.APPLICATION_JSON_VALUE,
     produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Candidature> createCandidature(@RequestBody Candidature candidature) {
-        ArrayList<Candidature> candidatures = cr.getCandidatureByIdAndUser(candidature.getIdPersonne(),candidature.getIdOffre());
+        List<Candidature> candidatures = cr.getCandidatureByIdAndUser(candidature.getIdPersonne(),candidature.getIdOffre());
         if (!candidatures.isEmpty()) throw new EntityExistsException("Une candidature active existe déjà pour cette personne !");
         candidature.setIdCandidature(UUID.randomUUID().version());
         candidature.setActive(true);
@@ -78,7 +79,7 @@ public class PersonneRepresentation {
      */
     @DeleteMapping(value="{user_id}/candidatures/{offre_id}/")
     public ResponseEntity<?> deleteCandidature(@PathVariable("user_id") Integer user_id, @PathVariable("offre_id") Integer offre_id) {
-        ArrayList<Candidature> candidatures = cr.getCandidatureByIdAndUser(user_id,offre_id);
+        List<Candidature> candidatures = cr.getCandidatureByIdAndUser(user_id,offre_id);
         if (candidatures.isEmpty()) throw new EntityExistsException("Aucune candidature active pour cette offre existe !");
         try {
             Candidature candidature = candidatures.get(0);

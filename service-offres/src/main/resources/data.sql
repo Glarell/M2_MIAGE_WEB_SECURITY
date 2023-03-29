@@ -6,7 +6,7 @@ drop table if exists offre cascade;
 drop table if exists organisation cascade;
 drop table if exists personne cascade;
 
-DROP SEQUENCE hibernate_sequence;
+DROP SEQUENCE IF EXISTS hibernate_sequence;
 CREATE  SEQUENCE hibernate_sequence START 4;
 
 CREATE TABLE Adresse(
