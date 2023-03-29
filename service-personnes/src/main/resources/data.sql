@@ -10,42 +10,42 @@ DROP SEQUENCE hibernate_sequence;
 CREATE  SEQUENCE hibernate_sequence START 4;
 
 CREATE TABLE Adresse(
-    idAdresse SERIAL PRIMARY KEY NOT NULL,
-    adressePays VARCHAR NOT NULL,
-    adresseVille VARCHAR NOT NULL,
-    codePostal INTEGER NOT NULL,
-    adresseRue VARCHAR NOT NULL
+                        idAdresse SERIAL PRIMARY KEY NOT NULL,
+                        adressePays VARCHAR NOT NULL,
+                        adresseVille VARCHAR NOT NULL,
+                        codePostal INTEGER NOT NULL,
+                        adresseRue VARCHAR NOT NULL
 );
 
 CREATE TABLE Geo(
-    idGeo SERIAL PRIMARY KEY NOT NULL,
-    latitude FLOAT NOT NULL,
-    longitude FLOAT NOT NULL
+                    idGeo SERIAL PRIMARY KEY NOT NULL,
+                    latitude FLOAT NOT NULL,
+                    longitude FLOAT NOT NULL
 );
 CREATE TABLE Personne(
-    idPersonne SERIAL PRIMARY KEY NOT NULL,
-    nom VARCHAR NOT NULL,
-    prenom VARCHAR NOT NULL
+                         idPersonne SERIAL PRIMARY KEY NOT NULL,
+                         nom VARCHAR NOT NULL,
+                         prenom VARCHAR NOT NULL
 );
 
 CREATE TABLE Organisation(
-    idOrganisation SERIAL PRIMARY KEY NOT NULL,
-    nomOrganisation VARCHAR NOT NULL,
-    idAdresse INTEGER,
-    email VARCHAR NOT NULL,
-    telephone VARCHAR NOT NULL,
-    url VARCHAR NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse)
+                             idOrganisation SERIAL PRIMARY KEY NOT NULL,
+                             nomOrganisation VARCHAR NOT NULL,
+                             idAdresse INTEGER,
+                             email VARCHAR NOT NULL,
+                             telephone VARCHAR NOT NULL,
+                             url VARCHAR NOT NULL,
+                             FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse)
 );
 
 CREATE TABLE LieuStage(
-    idLieuStage SERIAL PRIMARY KEY NOT NULL,
-    idAdresse INTEGER,
-    telephone INTEGER NOT NULL,
-    url VARCHAR NOT NULL,
-    idGeo INTEGER NOT NULL,
-    FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse),
-    FOREIGN KEY (idGeo) REFERENCES Geo (idGeo)
+                          idLieuStage SERIAL PRIMARY KEY NOT NULL,
+                          idAdresse INTEGER,
+                          telephone INTEGER NOT NULL,
+                          url VARCHAR NOT NULL,
+                          idGeo INTEGER NOT NULL,
+                          FOREIGN KEY (idAdresse) REFERENCES Adresse (idAdresse),
+                          FOREIGN KEY (idGeo) REFERENCES Geo (idGeo)
 );
 
 CREATE TABLE Offre (
@@ -68,13 +68,13 @@ CREATE TABLE Offre (
 );
 
 CREATE TABLE Candidature(
-    idCandidature SERIAL PRIMARY KEY NOT NULL,
-    isActive BOOLEAN DEFAULT TRUE,
-    idPersonne INTEGER NOT NULL,
-    idOffre INTEGER NOT NULL,
-    dateCandidature VARCHAR NOT NULL,
-    FOREIGN KEY (idPersonne) REFERENCES Personne(idPersonne),
-    FOREIGN KEY (idOffre) REFERENCES Offre(idOffre)
+                            idCandidature SERIAL PRIMARY KEY NOT NULL,
+                            isActive BOOLEAN DEFAULT TRUE,
+                            idPersonne INTEGER NOT NULL,
+                            idOffre INTEGER NOT NULL,
+                            dateCandidature VARCHAR NOT NULL,
+                            FOREIGN KEY (idPersonne) REFERENCES Personne(idPersonne),
+                            FOREIGN KEY (idOffre) REFERENCES Offre(idOffre)
 );
 
 INSERT INTO geo(idGeo, latitude, longitude) VALUES (1,50.23,79.23);
