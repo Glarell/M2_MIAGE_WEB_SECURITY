@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Table(name="lieustage")
 public class LieuStage implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int idLieuStage;
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="idAdresse", referencedColumnName = "idAdresse")
@@ -24,4 +25,8 @@ public class LieuStage implements Serializable {
     private Geo geo;
     private int telephone;
     private String url;
+
+    public boolean verify(){
+        return url.length()!=0;
+    }
 }

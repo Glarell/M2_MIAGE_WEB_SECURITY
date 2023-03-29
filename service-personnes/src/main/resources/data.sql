@@ -6,8 +6,11 @@ drop table if exists offre cascade;
 drop table if exists organisation cascade;
 drop table if exists personne cascade;
 
+DROP SEQUENCE hibernate_sequence;
+CREATE  SEQUENCE hibernate_sequence START 4;
+
 CREATE TABLE Adresse(
-    idAdresse INTEGER PRIMARY KEY NOT NULL,
+    idAdresse SERIAL PRIMARY KEY NOT NULL,
     adressePays VARCHAR NOT NULL,
     adresseVille VARCHAR NOT NULL,
     codePostal INTEGER NOT NULL,
@@ -15,18 +18,18 @@ CREATE TABLE Adresse(
 );
 
 CREATE TABLE Geo(
-    idGeo INTEGER PRIMARY KEY NOT NULL,
+    idGeo SERIAL PRIMARY KEY NOT NULL,
     latitude FLOAT NOT NULL,
     longitude FLOAT NOT NULL
 );
 CREATE TABLE Personne(
-    idPersonne INTEGER PRIMARY KEY NOT NULL,
+    idPersonne SERIAL PRIMARY KEY NOT NULL,
     nom VARCHAR NOT NULL,
     prenom VARCHAR NOT NULL
 );
 
 CREATE TABLE Organisation(
-    idOrganisation INTEGER PRIMARY KEY NOT NULL,
+    idOrganisation SERIAL PRIMARY KEY NOT NULL,
     nomOrganisation VARCHAR NOT NULL,
     idAdresse INTEGER,
     email VARCHAR NOT NULL,
@@ -36,7 +39,7 @@ CREATE TABLE Organisation(
 );
 
 CREATE TABLE LieuStage(
-    idLieuStage INTEGER PRIMARY KEY NOT NULL,
+    idLieuStage SERIAL PRIMARY KEY NOT NULL,
     idAdresse INTEGER,
     telephone INTEGER NOT NULL,
     url VARCHAR NOT NULL,
@@ -46,7 +49,7 @@ CREATE TABLE LieuStage(
 );
 
 CREATE TABLE Offre (
-                       idOffre INTEGER PRIMARY KEY NOT NULL,
+                       idOffre SERIAL PRIMARY KEY NOT NULL,
                        nomStage VARCHAR NOT NULL,
                        domaine VARCHAR NOT NULL,
                        descriptionStage VARCHAR NOT NULL,
@@ -65,7 +68,7 @@ CREATE TABLE Offre (
 );
 
 CREATE TABLE Candidature(
-    idCandidature INTEGER PRIMARY KEY NOT NULL,
+    idCandidature SERIAL PRIMARY KEY NOT NULL,
     isActive BOOLEAN DEFAULT TRUE,
     idPersonne INTEGER NOT NULL,
     idOffre INTEGER NOT NULL,

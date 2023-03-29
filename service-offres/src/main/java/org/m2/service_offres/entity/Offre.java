@@ -17,6 +17,7 @@ import java.util.List;
 public class Offre implements Serializable {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int idOffre;
     private String nomStage;
     private String domaine;

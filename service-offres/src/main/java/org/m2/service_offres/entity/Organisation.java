@@ -12,7 +12,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name="organisation")
 public class Organisation implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int idOrganisation;
     private String nomOrganisation;
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -21,4 +23,17 @@ public class Organisation implements Serializable {
     private String email;
     private String telephone;
     private String url;
+
+    public boolean verify(){
+        if (this.nomOrganisation.length() == 0) {
+            return false;
+        }
+        if (this.email.length() == 0){
+            return false;
+        }
+        if (this.telephone.length() == 0){
+            return false;
+        }
+        return this.url.length() != 0;
+    }
 }
