@@ -1,5 +1,6 @@
 package org.m2.services_personnes.entity;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,12 @@ public class Candidature implements Serializable {
     //@JoinColumn(name="idOffre", referencedColumnName = "idOffre")
     private int idOffre;
     private String dateCandidature;
-
     private boolean isActive;
+
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this, Candidature.class);
+    }
 }

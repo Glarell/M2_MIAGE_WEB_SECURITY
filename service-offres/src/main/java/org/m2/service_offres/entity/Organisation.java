@@ -1,5 +1,6 @@
 package org.m2.service_offres.entity;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,16 +25,21 @@ public class Organisation implements Serializable {
     private String telephone;
     private String url;
 
-    public boolean verify(){
+    public boolean verify() {
         if (this.nomOrganisation.length() == 0) {
             return false;
         }
-        if (this.email.length() == 0){
+        if (this.email.length() == 0) {
             return false;
         }
-        if (this.telephone.length() == 0){
+        if (this.telephone.length() == 0) {
             return false;
         }
         return this.url.length() != 0;
+    }
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this, Organisation.class);
     }
 }

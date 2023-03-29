@@ -1,5 +1,6 @@
 package org.m2.services_personnes.entity;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,4 +26,10 @@ public class Personne implements Serializable {
     private String prenom;
     @OneToMany(targetEntity = Candidature.class, mappedBy = "idPersonne")
     private List<Candidature> candidatures = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this, Personne.class);
+    }
 }

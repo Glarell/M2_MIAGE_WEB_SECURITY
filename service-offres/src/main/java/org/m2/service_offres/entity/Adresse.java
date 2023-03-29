@@ -1,5 +1,6 @@
 package org.m2.service_offres.entity;
 
+import com.google.gson.Gson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,13 +22,19 @@ public class Adresse implements Serializable {
     private int codePostal;
     private String adresseRue;
 
-    public boolean verify(){
-        if (this.adressePays.length() == 0){
+    public boolean verify() {
+        if (this.adressePays.length() == 0) {
             return false;
         }
-        if (this.adresseVille.length() == 0){
+        if (this.adresseVille.length() == 0) {
             return false;
         }
         return this.adresseRue.length() != 0;
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this, Adresse.class);
     }
 }

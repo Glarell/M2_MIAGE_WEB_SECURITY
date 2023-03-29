@@ -141,9 +141,10 @@ public class OffreRepresentation {
     /**
      * PUT offres/id_offre
      */
-    @PutMapping(value = "{idOffre}")
+    @PutMapping(value="/{offreId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity<?> updateOffre(@PathVariable("idOffre") Integer id, @RequestBody Offre new_offre) {
+    public ResponseEntity<?> updateOffre(@PathVariable("offreId") Integer id, @RequestBody Offre new_offre) {
         if (!or.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
