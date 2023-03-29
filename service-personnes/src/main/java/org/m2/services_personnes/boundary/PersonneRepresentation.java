@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -125,6 +124,15 @@ public class PersonneRepresentation {
     @GetMapping(value="/candidatures/{offre_id}/")
     public ResponseEntity<?> getCandidaturesByIdOffre(@PathVariable("offre_id") Integer offre_id) {
         return ResponseEntity.ok(ca.toCollectionModel(cr.getCandidaturesByIdOffre(offre_id)));
+    }
+
+    /**
+     * GET
+     * users/candidatures/models/id_offre/
+     */
+    @GetMapping(value="/candidatures/models/{offre_id}/")
+    public ResponseEntity<?> getCandidaturesModelsByIdOffre(@PathVariable("offre_id") Integer offre_id) {
+        return ResponseEntity.ok(cr.getCandidaturesByIdOffre(offre_id));
     }
 
     /**

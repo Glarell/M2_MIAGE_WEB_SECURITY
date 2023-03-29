@@ -1,19 +1,28 @@
 package org.m2.service_offres.boundary;
 
+import com.google.gson.Gson;
 import org.apache.coyote.Response;
 import org.m2.service_offres.control.OffreAssembler;
 import org.m2.service_offres.entity.*;
+import org.m2.service_offres.stash.Candidature;
+import org.m2.service_offres.stash.CandidatureList;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @ResponseBody
@@ -39,10 +48,29 @@ public class OffreRepresentation {
 
     @GetMapping(value = "/{offreId}")
     public ResponseEntity<?> getOffre(@PathVariable("offreId") Integer id) {
-        return Optional.of(or.findById(id))
-                .filter(Optional::isPresent)
-                .map(i -> ResponseEntity.ok(oa.toModel(i.get())))
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            HttpServletRequest t = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            String uri = "http://"+t.getServerName()+":8083/users/candidatures/models/"+id+"/";
+            RestTemplate restTemplate = new RestTemplate();
+            String json = restTemplate.getForEntity(uri, String.class).getBody();
+            return Optional.of(or.findById(id))
+                    .filter(Optional::isPresent)
+                    .map(i -> {
+                        EntityModel<Offre> offre = oa.toModel(i.get());
+                        Gson gson = new Gson();
+                        CandidatureList list = gson.fromJson(json, CandidatureList.class);
+                        list.forEach(el ->
+                                offre.add(Link.of("http://"+t.getServerName()+":8083/users/"+el.getIdPersonne()+"/"+el.getIdOffre()+"/","candidatures"))
+                        );
+                        return ResponseEntity.ok(offre);
+                    })
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            return Optional.of(or.findById(id))
+                    .filter(Optional::isPresent)
+                    .map(i -> ResponseEntity.ok(oa.toModel(i.get())))
+                    .orElse(ResponseEntity.notFound().build());
+        }
     }
 
     /**
@@ -55,8 +83,6 @@ public class OffreRepresentation {
     }
 
     /**
-     * POST offres/id_offre
-     * -------------------------
      * POST offres/create
      */
     @PostMapping(path = "/create",
