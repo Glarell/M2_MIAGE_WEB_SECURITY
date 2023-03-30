@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -18,7 +16,7 @@ import java.util.List;
 public class Offre implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int idOffre;
     private String nomStage;
     private String domaine;
@@ -31,10 +29,10 @@ public class Offre implements Serializable {
     private long salaireStage;
     private long indemnisation;
     @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="idOrganisation", referencedColumnName = "idorganisation")
+    @JoinColumn(name = "idOrganisation", referencedColumnName = "idorganisation")
     private Organisation organisation;
     @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="idLieuStage", referencedColumnName = "idlieustage")
+    @JoinColumn(name = "idLieuStage", referencedColumnName = "idlieustage")
     private LieuStage lieuStage;
 
     private boolean isActive;

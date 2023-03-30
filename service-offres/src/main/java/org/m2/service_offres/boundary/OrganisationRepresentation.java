@@ -1,6 +1,5 @@
 package org.m2.service_offres.boundary;
 
-import org.m2.service_offres.control.OffreAssembler;
 import org.m2.service_offres.control.OrganisationAssembler;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,8 @@ public class OrganisationRepresentation {
     private final OrganisationAssembler orgaa;
 
     public OrganisationRepresentation(OrganisationRessource orgar, OrganisationAssembler orgaa) {
-        this.orgar=orgar;
-        this.orgaa=orgaa;
+        this.orgar = orgar;
+        this.orgaa = orgaa;
     }
 
     /**
@@ -38,7 +37,7 @@ public class OrganisationRepresentation {
      * GET
      * organisations/id_org
      */
-    @GetMapping(value="/{organisation_id}/")
+    @GetMapping(value = "/{organisation_id}/")
     public ResponseEntity<?> getOrganisation(@PathVariable("organisation_id") Integer id) {
         return Optional.of(orgar.findById(id))
                 .filter(Optional::isPresent)

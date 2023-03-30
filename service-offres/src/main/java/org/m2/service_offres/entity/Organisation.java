@@ -7,20 +7,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="organisation")
+@Table(name = "organisation")
 public class Organisation implements Serializable {
 
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "idAdresse", referencedColumnName = "idAdresse")
+    Adresse adresse;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idOrganisation;
     private String nomOrganisation;
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="idAdresse",referencedColumnName = "idAdresse")
-    Adresse adresse;
     private String email;
     private String telephone;
     private String url;
@@ -37,6 +38,7 @@ public class Organisation implements Serializable {
         }
         return this.url.length() != 0;
     }
+
     @Override
     public String toString() {
         Gson gson = new Gson();

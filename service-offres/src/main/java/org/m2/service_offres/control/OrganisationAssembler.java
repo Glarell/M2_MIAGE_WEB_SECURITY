@@ -1,8 +1,6 @@
 package org.m2.service_offres.control;
 
-import org.m2.service_offres.boundary.OffreRepresentation;
 import org.m2.service_offres.boundary.OrganisationRepresentation;
-import org.m2.service_offres.entity.Offre;
 import org.m2.service_offres.entity.Organisation;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;

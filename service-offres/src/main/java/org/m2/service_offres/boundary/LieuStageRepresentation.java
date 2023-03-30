@@ -1,7 +1,6 @@
 package org.m2.service_offres.boundary;
 
 import org.m2.service_offres.control.LieuStageAssembler;
-import org.m2.service_offres.control.OrganisationAssembler;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,8 @@ public class LieuStageRepresentation {
     private final LieuStageAssembler lsa;
 
     public LieuStageRepresentation(LieuStageRessource lsr, LieuStageAssembler lsa) {
-        this.lsr=lsr;
-        this.lsa=lsa;
+        this.lsr = lsr;
+        this.lsa = lsa;
     }
 
     /**
@@ -38,7 +37,7 @@ public class LieuStageRepresentation {
      * GET
      * lieustages/id_org
      */
-    @GetMapping(value="/{lieuStage_id}/")
+    @GetMapping(value = "/{lieuStage_id}/")
     public ResponseEntity<?> getLieuStage(@PathVariable("lieuStage_id") Integer id) {
         return Optional.of(lsr.findById(id))
                 .filter(Optional::isPresent)

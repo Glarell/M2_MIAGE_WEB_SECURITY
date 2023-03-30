@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="geo")
+@Table(name = "geo")
 public class Geo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +23,7 @@ public class Geo implements Serializable {
     public boolean verify() {
         return (this.latitude != 0 && this.longitude != 0);
     }
+
     @Override
     public String toString() {
         Gson gson = new Gson();

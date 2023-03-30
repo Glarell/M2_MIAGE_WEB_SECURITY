@@ -2,7 +2,6 @@ package org.m2.services_personnes.control;
 
 import org.m2.services_personnes.boundary.PersonneRepresentation;
 import org.m2.services_personnes.entity.Candidature;
-import org.m2.services_personnes.entity.Personne;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -16,7 +15,7 @@ public class CandidatureAssembler implements RepresentationModelAssembler<Candid
     @Override
     public EntityModel<Candidature> toModel(Candidature candidature) {
         return EntityModel.of(candidature,
-                linkTo(methodOn(PersonneRepresentation.class).getCandidature(candidature.getIdPersonne(),candidature.getIdCandidature())).withSelfRel(),
+                linkTo(methodOn(PersonneRepresentation.class).getCandidature(candidature.getIdPersonne(), candidature.getIdCandidature())).withSelfRel(),
                 linkTo(methodOn(PersonneRepresentation.class).getPersonne(candidature.getIdPersonne())).withSelfRel(),
                 linkTo(methodOn(PersonneRepresentation.class).getAllPersonnes()).withRel("personnes"));
     }
