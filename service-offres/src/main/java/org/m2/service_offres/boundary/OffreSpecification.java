@@ -7,16 +7,16 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.HashMap;
 
 
 public class OffreSpecification implements Specification<Offre> {
 
     String columnName;
     String value;
+
     public OffreSpecification(String columnName, String value) {
-        this.columnName=columnName;
-        this.value=value;
+        this.columnName = columnName;
+        this.value = value;
     }
 
     @Override
@@ -34,13 +34,13 @@ public class OffreSpecification implements Specification<Offre> {
         try {
             Integer value = Integer.parseInt(this.value);
             return criteriaBuilder.equal(root.get(this.columnName), value);
-        } catch (Exception e ) {
+        } catch (Exception e) {
             if (this.value.equals("true")) {
                 return criteriaBuilder.isTrue(root.get(this.columnName));
             } else if (this.value.equals("false")) {
                 return criteriaBuilder.isFalse(root.get(this.columnName));
             }
-            return criteriaBuilder.like(root.get(this.columnName), "%"+this.value+"%");
+            return criteriaBuilder.like(root.get(this.columnName), "%" + this.value + "%");
         }
     }
 }

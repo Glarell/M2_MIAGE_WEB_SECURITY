@@ -1,10 +1,8 @@
 package org.m2.service_offres.boundary;
 
 import com.google.gson.Gson;
-import org.apache.coyote.Response;
 import org.m2.service_offres.control.OffreAssembler;
 import org.m2.service_offres.entity.*;
-import org.m2.service_offres.stash.Candidature;
 import org.m2.service_offres.stash.CandidatureList;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.hateoas.EntityModel;
@@ -17,14 +15,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.*;
-
-import static org.springframework.data.jpa.domain.Specification.where;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @ResponseBody
@@ -52,7 +48,7 @@ public class OffreRepresentation {
     public ResponseEntity<?> getOffre(@PathVariable("offreId") Integer id) {
         try {
             HttpServletRequest t = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-            String uri = "http://"+t.getServerName()+":8083/users/candidatures/models/"+id+"/";
+            String uri = "http://" + t.getServerName() + ":8083/users/candidatures/models/" + id + "/";
             RestTemplate restTemplate = new RestTemplate();
             String json = restTemplate.getForEntity(uri, String.class).getBody();
             return Optional.of(or.findById(id))
@@ -62,7 +58,7 @@ public class OffreRepresentation {
                         Gson gson = new Gson();
                         CandidatureList list = gson.fromJson(json, CandidatureList.class);
                         list.forEach(el ->
-                                offre.add(Link.of("http://"+t.getServerName()+":8083/users/"+el.getIdPersonne()+"/"+el.getIdOffre()+"/","candidatures"))
+                                offre.add(Link.of("http://" + t.getServerName() + ":8083/users/" + el.getIdPersonne() + "/" + el.getIdOffre() + "/", "candidatures"))
                         );
                         return ResponseEntity.ok(offre);
                     })
@@ -80,16 +76,16 @@ public class OffreRepresentation {
      * offres/
      */
     @GetMapping
-    public ResponseEntity<?> getAllOffres(@RequestParam(required = false) Map<String,String> params) {
+    public ResponseEntity<?> getAllOffres(@RequestParam(required = false) Map<String, String> params) {
         if (params.isEmpty()) {
-            params.put("isActive","true");
+            params.put("isActive", "true");
         }
         System.out.println(params);
         OffreSpecifications offreSpecificationList = new OffreSpecifications();
-        for (Map.Entry<String,String> mapentry : params.entrySet()) {
-            offreSpecificationList.add(new OffreSpecification(mapentry.getKey(),mapentry.getValue()));
+        for (Map.Entry<String, String> mapentry : params.entrySet()) {
+            offreSpecificationList.add(new OffreSpecification(mapentry.getKey(), mapentry.getValue()));
         }
-        return ResponseEntity.ok(oa.toCollectionModel(or.findAll(offreSpecificationList.getOffreSpecification(offreSpecificationList.get(offreSpecificationList.size()-1)))));
+        return ResponseEntity.ok(oa.toCollectionModel(or.findAll(offreSpecificationList.getOffreSpecification(offreSpecificationList.get(offreSpecificationList.size() - 1)))));
     }
 
     /**
@@ -130,18 +126,18 @@ public class OffreRepresentation {
 
     }
 
-    public Organisation manageOrganisation(Offre offre){
+    public Organisation manageOrganisation(Offre offre) {
         int idOrga = offre.getOrganisation().getIdOrganisation();
         Organisation orga = offre.getOrganisation();
-        if (idOrga != 0 && this.orgar.findById(idOrga).isEmpty()){
+        if (idOrga != 0 && this.orgar.findById(idOrga).isEmpty()) {
             return null;
         }
-        if (idOrga == 0){
+        if (idOrga == 0) {
             Adresse adr = orga.getAdresse();
-            if (adr.getIdAdresse() != 0 && this.ar.findById(adr.getIdAdresse()).isEmpty()){
+            if (adr.getIdAdresse() != 0 && this.ar.findById(adr.getIdAdresse()).isEmpty()) {
                 return null;
             }
-            if (adr.getIdAdresse() == 0 && adr.verify()){
+            if (adr.getIdAdresse() == 0 && adr.verify()) {
                 adr = this.ar.save(adr);
             }
             orga.setAdresse(adr);
@@ -150,32 +146,32 @@ public class OffreRepresentation {
         return orga;
     }
 
-    public LieuStage manageLieuStage(Offre offre){
+    public LieuStage manageLieuStage(Offre offre) {
         int idLieuStage = offre.getLieuStage().getIdLieuStage();
         LieuStage lieuStage = offre.getLieuStage();
-        if (idLieuStage != 0 && this.ltr.findById(idLieuStage).isEmpty()){
+        if (idLieuStage != 0 && this.ltr.findById(idLieuStage).isEmpty()) {
             return null;
         }
-        if (idLieuStage == 0){
+        if (idLieuStage == 0) {
             Adresse adr = lieuStage.getAdresse();
             boolean adr_valid = false;
-            if (adr.getIdAdresse() != 0 && this.ar.findById(adr.getIdAdresse()).isEmpty()){
+            if (adr.getIdAdresse() != 0 && this.ar.findById(adr.getIdAdresse()).isEmpty()) {
                 return null;
             }
-            if (adr.getIdAdresse() == 0 && adr.verify()){
+            if (adr.getIdAdresse() == 0 && adr.verify()) {
                 adr = this.ar.save(adr);
                 adr_valid = true;
             }
             Geo geo = lieuStage.getGeo();
             boolean geo_valid = false;
-            if (geo.getIdGeo() != 0 && this.gr.findById(geo.getIdGeo()).isEmpty()){
+            if (geo.getIdGeo() != 0 && this.gr.findById(geo.getIdGeo()).isEmpty()) {
                 return null;
             }
-            if (geo.getIdGeo() == 0 && geo.verify()){
+            if (geo.getIdGeo() == 0 && geo.verify()) {
                 geo = this.gr.save(geo);
                 geo_valid = true;
             }
-            if (adr_valid && geo_valid){
+            if (adr_valid && geo_valid) {
                 lieuStage.setAdresse(adr);
                 lieuStage.setGeo(geo);
                 lieuStage = this.ltr.save(lieuStage);
@@ -183,10 +179,11 @@ public class OffreRepresentation {
         }
         return lieuStage;
     }
+
     /**
      * PUT offres/id_offre
      */
-    @PutMapping(value="/{offreId}",
+    @PutMapping(value = "/{offreId}",
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
     public ResponseEntity<?> updateOffre(@PathVariable("offreId") Integer id, @RequestBody Offre new_offre) {
