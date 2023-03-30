@@ -58,7 +58,7 @@ class ServiceOffresApplicationTests {
     @BeforeEach
     public void setupContext() {
         Adresse ad1 = new Adresse(2, "France", "Epinal", 88300, "12 rue des étoiles");
-        Organisation org1 = new Organisation(2, "Amazon Entreprise", ad1,
+        Organisation org1 = new Organisation(ad1,2, "Amazon Entreprise",
                 "contact@amazon.com",
                 "3275968898",
                 "https://amazon.com");
@@ -95,7 +95,7 @@ class ServiceOffresApplicationTests {
         // pour l'id 188329932 ==> Offre 1
         when(or.findById(188329932)).thenReturn(Optional.of(o1));
         when(or.findAll()).thenReturn(List.of(o1));
-        when(or.findAllActive(offreSpecificationList.getOffreSpecification(offreSpecificationList.get(offreSpecificationList.size() - 1)))).thenReturn(List.of(o1, o1));
+        when(or.findAll()).thenReturn(List.of(o1, o1));
         when(or.existsById(Mockito.any(Integer.class))).thenReturn(Boolean.TRUE);
     }
 
@@ -136,7 +136,7 @@ class ServiceOffresApplicationTests {
      * url tested --> GET /offres/
      */
     void getOffres() throws Exception {
-        this.mvck.perform(get("/offres/"))
+        this.mvck.perform(get("/offres?isActive=true"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$..offreList.*", hasSize(2)));
@@ -148,7 +148,7 @@ class ServiceOffresApplicationTests {
      */
     void postOffre() throws Exception {
         Adresse ad1 = new Adresse(2, "France", "Epinal", 88300, "12 rue des étoiles");
-        Organisation org1 = new Organisation(2, "Amazon Entreprise", ad1,
+        Organisation org1 = new Organisation(ad1,2, "Amazon Entreprise",
                 "contact@amazon.com",
                 "3275968898",
                 "https://amazon.com");
@@ -213,7 +213,7 @@ class ServiceOffresApplicationTests {
      */
     void putOffre() throws Exception {
         Adresse ad1 = new Adresse(2, "France", "Epinal", 88300, "12 rue des étoiles");
-        Organisation org1 = new Organisation(2, "Amazon Entreprise", ad1,
+        Organisation org1 = new Organisation(ad1,2, "Amazon Entreprise",
                 "contact@amazon.com",
                 "3275968898",
                 "https://amazon.com");
