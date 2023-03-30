@@ -24,6 +24,8 @@ import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.*;
 
+import static org.springframework.data.jpa.domain.Specification.where;
+
 @Controller
 @ResponseBody
 @RequestMapping(value = "/offres", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,8 +80,25 @@ public class OffreRepresentation {
      * offres/
      */
     @GetMapping
-    public ResponseEntity<?> getAllOffres() {
-        return ResponseEntity.ok(oa.toCollectionModel(or.findAllActive()));
+    public ResponseEntity<?> getAllOffres(@RequestParam(required = false) Map<String,String> params) {
+        if (params.isEmpty()) {
+            params.put("isActive","true");
+        }
+        System.out.println(params);
+        OffreSpecifications offreSpecificationList = new OffreSpecifications();
+        for (Map.Entry<String,String> mapentry : params.entrySet()) {
+            offreSpecificationList.add(new OffreSpecification(mapentry.getKey(),mapentry.getValue()));
+        }
+        return ResponseEntity.ok(oa.toCollectionModel(or.findAll(offreSpecificationList.getOffreSpecification(offreSpecificationList.get(offreSpecificationList.size()-1)))));
+    }
+
+    /**
+     * GET
+     * offres/inactives
+     */
+    @GetMapping("/inactive")
+    public ResponseEntity<?> getAllInactivesOffres() {
+        return ResponseEntity.ok(oa.toCollectionModel(or.findAllInactive()));
     }
 
     /**

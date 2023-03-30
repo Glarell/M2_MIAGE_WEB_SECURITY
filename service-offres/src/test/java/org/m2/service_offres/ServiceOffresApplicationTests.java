@@ -1,7 +1,6 @@
 package org.m2.service_offres;
 
 import org.junit.Before;
-import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
@@ -18,13 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.same;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -102,7 +98,7 @@ class ServiceOffresApplicationTests {
 		// pour l'id 188329932 ==> Offre 1
 		when(or.findById(188329932)).thenReturn(Optional.of(o1));
 		when(or.findAll()).thenReturn(List.of(o1));
-		when(or.findAllActive()).thenReturn(List.of(o1,o1));
+		when(or.findAllActive(offreSpecificationList.getOffreSpecification(offreSpecificationList.get(offreSpecificationList.size() - 1)))).thenReturn(List.of(o1,o1));
 		when(or.existsById(Mockito.any(Integer.class))).thenReturn(Boolean.TRUE);
 	}
 

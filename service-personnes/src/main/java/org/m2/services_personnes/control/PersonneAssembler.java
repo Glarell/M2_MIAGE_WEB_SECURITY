@@ -16,7 +16,7 @@ public class PersonneAssembler  implements RepresentationModelAssembler<Personne
     public EntityModel<Personne> toModel(Personne personne) {
         return EntityModel.of(personne,
                 linkTo(methodOn(PersonneRepresentation.class).getPersonne(personne.getIdPersonne())).withSelfRel(),
-                linkTo(methodOn(PersonneRepresentation.class).getAllPersonnes()).withRel("collections"));
+                linkTo(methodOn(PersonneRepresentation.class).getAllPersonnes()).withRel("personnes"));
     }
 
     @Override

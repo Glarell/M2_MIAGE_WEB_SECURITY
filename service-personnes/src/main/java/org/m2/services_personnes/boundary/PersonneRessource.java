@@ -9,7 +9,4 @@ import java.util.ArrayList;
 
 public interface PersonneRessource extends JpaRepository<Personne,Integer> {
 
-    @Query(value = "SELECT * from Offre WHERE isActive=TRUE",nativeQuery = true)
-    ArrayList<Candidature> findAllfind();
-
 }

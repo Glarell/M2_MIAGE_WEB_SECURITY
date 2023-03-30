@@ -7,6 +7,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -16,7 +18,9 @@ public class OffreAssembler implements RepresentationModelAssembler<Offre, Entit
     public EntityModel<Offre> toModel(Offre offre) {
         return EntityModel.of(offre,
                linkTo(methodOn(OffreRepresentation.class).getOffre(offre.getIdOffre())).withSelfRel(),
-                linkTo(methodOn(OffreRepresentation.class).getAllOffres()).withRel("offres"));
+                linkTo(methodOn(OffreRepresentation.class).getAllOffres(new HashMap<String, String>() {{
+                    put("isActive", "true");
+                }})).withRel("offres"));
     }
 
     @Override
