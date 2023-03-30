@@ -112,7 +112,6 @@ public class OffreRepresentation {
             if (offre.getNomStage() == null) {
                 throw new DataIntegrityViolationException("Nom stage incorrect !");
             }
-            offre.setIdOffre(3);
             Offre saved = or.save(offre);
             System.out.println("SAVED DONE");
             System.out.println(saved);
