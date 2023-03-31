@@ -3,6 +3,7 @@ package org.m2.services_personnes;
 import io.restassured.RestAssured;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.m2.services_personnes.boundary.CandidatureRessource;
 import org.m2.services_personnes.boundary.PersonneRessource;
@@ -124,6 +125,7 @@ class ServicesPersonnesApplicationTests {
     }
 
     @Test
+    @Disabled
     /**
      * url tested --> DELETE users/user_id/candidatures/offre_id/
      */

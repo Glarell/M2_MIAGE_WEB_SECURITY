@@ -5,13 +5,15 @@ services:
     container_name: service-offres
     depends_on:
       - service-postgres
-    #    ports:
-    #        - 8082:8082
+    ports:
+      - 8082:8082
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=postgres
-    network_mode: "host"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://container-service-postgres:5432/postgres
+    networks:
+      - mongo_net
 
   #Service Personne
   service-personnes:
@@ -19,13 +21,15 @@ services:
     container_name: service-personnes
     depends_on:
       - service-postgres
-    #    ports:
-    #      - 8083:8083
+    ports:
+      - 8083:8083
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=postgres
-    network_mode: "host"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://container-service-postgres:5432/postgres
+    networks:
+      - mongo_net
 
   #Service Postgresql
   service-postgres:
@@ -37,10 +41,15 @@ services:
       PGDATA: /data/postgres
     volumes:
       - service-postgres:/data/postgres
-    network_mode: "host"
-    #    ports:
-    #      - "5432:5432"
+    networks:
+      - mongo_net
+    ports:
+      - "5432:5432"
     restart: unless-stopped
 
 volumes:
   service-postgres:
+
+networks:
+  mongo_net:
+    driver: bridge
