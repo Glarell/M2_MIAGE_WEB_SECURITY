@@ -79,6 +79,7 @@ CREATE TABLE Candidature
     isActive        BOOLEAN DEFAULT TRUE,
     idPersonne      INTEGER            NOT NULL,
     idOffre         INTEGER            NOT NULL,
+    state           VARCHAR DEFAULT 'en attente' NOT NULL,
     dateCandidature VARCHAR            NOT NULL,
     FOREIGN KEY (idPersonne) REFERENCES Personne (idPersonne),
     FOREIGN KEY (idOffre) REFERENCES Offre (idOffre)

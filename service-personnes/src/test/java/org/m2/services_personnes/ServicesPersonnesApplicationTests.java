@@ -55,8 +55,8 @@ class ServicesPersonnesApplicationTests {
 
     @BeforeEach
     public void setupContext() {
-        Candidature c1 = new Candidature(1, 1, 1, "2023-03-29", true);
-        Candidature c2 = new Candidature(2, 1, 2, "2023-03-19", true);
+        Candidature c1 = new Candidature(1, 1, 1, "2023-03-29", "en attente", true);
+        Candidature c2 = new Candidature(2, 1, 2, "2023-03-19", "en attente", true);
         Personne p = new Personne(1, "TONDON", "César", new ArrayList<>());
         Personne p2 = new Personne(2, "CISTERNINO", "Enzo", new ArrayList<>(List.of(c2)));
         p.setCandidatures(List.of(c1, c2));
@@ -112,7 +112,7 @@ class ServicesPersonnesApplicationTests {
      * url tested --> POST users/candidatures/create/
      */
     public void createCandidature() throws Exception {
-        Candidature c1 = new Candidature(3, 1, 1, "2023-03-29", true);
+        Candidature c1 = new Candidature(3, 1, 1, "2023-03-29", "en attente", true);
         when(cr.save(Mockito.any(Candidature.class))).thenReturn(c1);
         when(cr.save(c1)).thenReturn(c1);
         Personne p = new Personne(1, "TONDON", "César", new ArrayList<>());
@@ -130,7 +130,7 @@ class ServicesPersonnesApplicationTests {
      * url tested --> DELETE users/user_id/candidatures/offre_id/
      */
     public void deleteCandidature() throws Exception {
-        Candidature c1 = new Candidature(3, 1, 1, "2023-03-29", true);
+        Candidature c1 = new Candidature(3, 1, 1, "2023-03-29", "en attente", true);
         when(cr.getCandidatureByIdAndUser(1, 1)).thenReturn(List.of(c1));
         this.mvck.perform(delete("/users/1/candidatures/1"))
                 .andExpect(status().isOk());
@@ -156,7 +156,7 @@ class ServicesPersonnesApplicationTests {
      * url tested --> GET users/user_id/offre_id/
      */
     public void getCandidature() throws Exception {
-        when(cr.getCandidatureByIdAndUser(1, 1)).thenReturn(List.of(new Candidature(1, 1, 1, "2023-02-13", true)));
+        when(cr.getCandidatureByIdAndUser(1, 1)).thenReturn(List.of(new Candidature(1, 1, 1, "2023-02-13", "en attente", true)));
         this.mvck.perform(get("/users/1/1/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -170,8 +170,8 @@ class ServicesPersonnesApplicationTests {
      */
     public void getCandidaturesById() throws Exception {
         when(cr.getCandidaturesByUser(1)).thenReturn(List.of(
-                new Candidature(1, 1, 1, "2023-02-13", true),
-                new Candidature(2, 1, 2, "2023-07-13", true)
+                new Candidature(1, 1, 1, "2023-02-13", "en attente", true),
+                new Candidature(2, 1, 2, "2023-07-13", "en attente", true)
         ));
 
         this.mvck.perform(get("/users/1/candidatures/"))
@@ -186,9 +186,9 @@ class ServicesPersonnesApplicationTests {
      */
     public void getCandidaturesByIdOffre() throws Exception {
         when(cr.getCandidaturesByIdOffre(1)).thenReturn(List.of(
-                new Candidature(1, 1, 1, "2023-02-13", true),
-                new Candidature(2, 2, 1, "2023-07-13", true),
-                new Candidature(3, 3, 1, "2023-07-12", true)
+                new Candidature(1, 1, 1, "2023-02-13", "en attente", true),
+                new Candidature(2, 2, 1, "2023-07-13", "en attente", true),
+                new Candidature(3, 3, 1, "2023-07-12", "en attente", true)
         ));
         this.mvck.perform(get("/users/candidatures/1/"))
                 .andExpect(status().isOk())
@@ -201,7 +201,7 @@ class ServicesPersonnesApplicationTests {
      * url tested --> PUT users/candidatures/id_candidature/
      */
     public void putCandidature() throws Exception {
-        Candidature c1 = new Candidature(1, 1, 1, "2023-03-29", true);
+        Candidature c1 = new Candidature(1, 1, 1, "2023-03-29", "en attente", true);
         when(cr.save(c1)).thenReturn(c1);
         when(cr.existsById(1)).thenReturn(Boolean.TRUE);
         Personne p = new Personne(1, "TONDON", "César", new ArrayList<>());

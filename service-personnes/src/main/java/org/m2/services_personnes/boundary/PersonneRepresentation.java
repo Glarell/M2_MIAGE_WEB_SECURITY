@@ -58,6 +58,9 @@ public class PersonneRepresentation {
         List<Candidature> candidatures = cr.getCandidatureByIdAndUser(candidature.getIdPersonne(), candidature.getIdOffre());
         if (!candidatures.isEmpty())
             throw new EntityExistsException("Une candidature active existe déjà pour cette personne !");
+        if (!candidature.verifyState()){
+            return ResponseEntity.badRequest().build();
+        }
         candidature.setIdCandidature(UUID.randomUUID().version());
         candidature.setActive(true);
         try {
@@ -145,6 +148,9 @@ public class PersonneRepresentation {
     public ResponseEntity<?> putCandidature(@PathVariable("candidature_id") Integer candidature_id, @RequestBody Candidature candidature) {
         if (!cr.existsById(candidature_id)) {
             return ResponseEntity.notFound().build();
+        }
+        if (!candidature.verifyState()){
+            return ResponseEntity.badRequest().build();
         }
         candidature.setIdCandidature(candidature_id);
         cr.save(candidature);

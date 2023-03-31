@@ -24,6 +24,7 @@ public class Candidature implements Serializable {
     //@JoinColumn(name="idOffre", referencedColumnName = "idOffre")
     private int idOffre;
     private String dateCandidature;
+    private String state;
     private boolean isActive;
 
 
@@ -31,5 +32,9 @@ public class Candidature implements Serializable {
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this, Candidature.class);
+    }
+
+    public boolean verifyState() {
+        return this.state.equals("en attente") || this.state.equals("en cours") || this.state.equals("acceptee") || this.state.equals("refusee");
     }
 }
